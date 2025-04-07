@@ -1,37 +1,27 @@
 package ee.ursulavisnapuu.reisiplaneerija.model;
 
 import jakarta.persistence.*;
-import java.time.LocalDateTime;
+import lombok.*;
 
 @Entity
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
 public class Activity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String name;
-    private String location;
-    private LocalDateTime time;
+    private String title;
 
-    @ManyToOne
-    @JoinColumn(name = "trip_id")
-    private Trip trip;
+    @Column(length = 1000)
+    private String shortDescription;
 
-    // Getterid ja setterid
+    private double price;
 
-    public Long getId() { return id; }
-    public void setId(Long id) { this.id = id; }
+    private String currency;
 
-    public String getName() { return name; }
-    public void setName(String name) { this.name = name; }
-
-    public String getLocation() { return location; }
-    public void setLocation(String location) { this.location = location; }
-
-    public LocalDateTime getTime() { return time; }
-    public void setTime(LocalDateTime time) { this.time = time; }
-
-    public Trip getTrip() { return trip; }
-    public void setTrip(Trip trip) { this.trip = trip; }
+    private String bookingLink;
 }

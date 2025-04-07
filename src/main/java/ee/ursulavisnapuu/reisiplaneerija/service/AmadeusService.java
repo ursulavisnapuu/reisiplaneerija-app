@@ -5,6 +5,8 @@ import org.springframework.http.*;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 import org.json.JSONObject;
+import ee.ursulavisnapuu.reisiplaneerija.dto.ActivityResponse;
+import org.json.JSONArray;
 
 @Service
 public class AmadeusService {
@@ -57,4 +59,30 @@ public class AmadeusService {
 
         return response.getBody();
     }
+}
+
+public List<ActivityResponse> getParsedActivities(double lat, double lon) {
+    String rawJson = getActivitiesByGeo(lat, lon);
+    JSONObject json = new JSONObject(rawJson);
+    JSONArray data = json.getJSONArray("data");
+
+    List<ActivityResponse> activities = new ArrayList<>();
+
+    for (int i = 0; i < data.length(); i++) {
+        JSONObject item = data.getJSONObject(i);
+
+        String title = item.optString("name", "Puudub pealkiri");
+        String shortDescription = item.optString("shortDescription", "Kirjeldus puudub");
+
+        JSONObject priceObj = item.optJSONObject("price");
+        double price = priceObj != null ? priceObj.optDouble("amount", 0.0) : 0.0;
+        String currency = priceObj != null ? priceObj.optString("currencyCode", "") : "";
+
+        String bookingLink = item.optString("bookingLink", "");
+
+        ActivityResponse activity = new ActivityResponse(title, shortDescription, price, currency, bookingLink);
+        activities.add(activity);
+    }
+
+    return activities;
 }

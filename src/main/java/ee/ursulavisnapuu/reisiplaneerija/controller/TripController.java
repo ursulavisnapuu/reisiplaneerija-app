@@ -16,13 +16,13 @@ public class TripController {
         this.tripService = tripService;
     }
 
-    @GetMapping
-    public List<Trip> getTrips() {
-        return tripService.getAllTrips();
+    @PostMapping
+    public Trip createTrip(@RequestBody Trip trip) {
+        return tripService.saveTrip(trip);
     }
 
-    @PostMapping
-    public Trip addTrip(@RequestBody Trip trip) {
-        return tripService.saveTrip(trip);
+    @GetMapping
+    public List<Trip> getAllTrips() {
+        return tripService.getAllTrips();
     }
 }

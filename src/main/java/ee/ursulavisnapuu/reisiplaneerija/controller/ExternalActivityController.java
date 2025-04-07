@@ -32,8 +32,10 @@ public class ExternalActivityController {
     }
 
     @PostMapping("/save")
-    public List<Activity> fetchAndSaveActivities(@RequestParam double lat, @RequestParam double lon) {
-        List<ActivityResponse> externalActivities = amadeusService.getParsedActivities(lat, lon);
-        return activityService.saveAllFromResponse(externalActivities);
-    }
+public List<Activity> fetchAndSaveActivities(@RequestParam double lat, @RequestParam double lon) {
+    System.out.println(">>> POST /external-activities/save kutsuti välja!");
+    List<ActivityResponse> externalActivities = amadeusService.getParsedActivities(lat, lon);
+    return activityService.saveAllFromResponse(externalActivities);
+}
+
 }
